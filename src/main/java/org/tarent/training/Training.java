@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Training {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-
 	private long id;
 	
 	private String name;
