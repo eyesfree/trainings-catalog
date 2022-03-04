@@ -59,7 +59,7 @@ class TrainingsCatalogApplicationTests {
 	@Transactional
 	public void shouldAddDates() {
 
-		Training spring = new Training("Spring Boot for Java Developers", "spring-boot in depth",
+		Training spring = new Training("Rust for Java Developers", "rust in depth",
 		  "Ms. Anita Steinberg", new BigDecimal(500), Currency.getInstance(Locale.GERMANY)) ;
 
 	    Training springSaved = repository.save(spring);
@@ -87,7 +87,7 @@ class TrainingsCatalogApplicationTests {
 	@Transactional
 	public void shouldAddParticipants() {
 
-		Training spring = new Training("Spring Boot for Java Developers", "spring-boot in depth",
+		Training spring = new Training("Python for Java Developers", "python in depth",
 		  "Ms. Anita Steinberg", new BigDecimal(500), Currency.getInstance(Locale.GERMANY)) ;
 		TrainingDate date1 = new TrainingDate(LocalDateTime.parse("2022-12-03T10:00:00"));
 		TrainingDate date2 = new TrainingDate(LocalDateTime.parse("2022-12-08T09:30:00"));
@@ -125,4 +125,56 @@ class TrainingsCatalogApplicationTests {
 		assertThat(trainingDates.get(1).getStartDate()).isEqualTo(LocalDateTime.parse("2022-12-08T09:30:00"));
 		
 	}
+	
+	@Test
+    public void whenFindByStartingDateTimeBetween_NoResults() {
+		
+		Training spring = new Training("Azure for Java Developers", "azure overview",
+				  "Ms. Anita Steinberg", new BigDecimal(500), Currency.getInstance(Locale.GERMANY)) ;
+				TrainingDate date1 = new TrainingDate(LocalDateTime.parse("2022-12-03T10:00:00"));
+				TrainingDate date2 = new TrainingDate(LocalDateTime.parse("2022-12-08T09:30:00"));
+			    spring.addStartDate(date1);
+			    spring.addStartDate(date2);
+	    repository.save(spring);
+			    
+	    Training angular = new Training("React", "react in depth",
+				  "Ms. Anita Steinberg", new BigDecimal(500), Currency.getInstance(Locale.GERMANY)) ;
+				TrainingDate date3 = new TrainingDate(LocalDateTime.parse("2022-01-03T10:00:00"));
+				TrainingDate date4 = new TrainingDate(LocalDateTime.parse("2022-06-08T09:30:00"));
+				angular.addStartDate(date3);
+				angular.addStartDate(date4);
+		repository.save(angular);
+			    
+        List<Training> result = repository.findByStartDatesBetween(
+        		LocalDateTime.parse("2021-12-01T10:00:00"), LocalDateTime.parse("2021-12-10T10:30:00"));
+
+        assertThat(result.size()).isEqualTo(0);
+    }
+	
+	@Test
+    public void whenFindByStartingDateTimeBetween_WithResults() {
+		repository.deleteAll();
+		Training spring = new Training("Spring Boot for Java Developers", "spring-boot in depth",
+				  "Ms. Anita Steinberg", new BigDecimal(500), Currency.getInstance(Locale.GERMANY)) ;
+				TrainingDate date1 = new TrainingDate(LocalDateTime.parse("2020-10-03T10:00:00"));
+				TrainingDate date2 = new TrainingDate(LocalDateTime.parse("2021-10-08T09:30:00"));
+			    spring.addStartDate(date1);
+			    spring.addStartDate(date2);
+	    repository.save(spring);
+			    
+	    Training angular = new Training("Angular", "angular in depth",
+				  "Ms. Anita Steinberg", new BigDecimal(500), Currency.getInstance(Locale.GERMANY)) ;
+				TrainingDate date3 = new TrainingDate(LocalDateTime.parse("2020-12-03T10:00:00"));
+				TrainingDate date4 = new TrainingDate(LocalDateTime.parse("2021-12-08T09:30:00"));
+				angular.addStartDate(date3);
+				angular.addStartDate(date4);
+		repository.save(angular);
+			    
+        LocalDateTime startDateTimeTest = LocalDateTime.parse("2021-01-01T10:00:00");
+		LocalDateTime endDateTimeTest = LocalDateTime.parse("2022-12-12T10:30:00");
+		List<Training> result = repository.findByStartDatesBetween(
+        		startDateTimeTest, endDateTimeTest);
+
+        assertThat(result.size()).isEqualTo(2);
+    }
 }

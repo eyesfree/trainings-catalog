@@ -9,15 +9,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 public class TrainingDate {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@JsonIgnore
 	private long id;
 	
 	private LocalDateTime startDate;
@@ -26,6 +29,9 @@ public class TrainingDate {
 	
 	@OneToMany(cascade = {CascadeType.ALL})
 	private List<Participant> participants;
+	
+	@ManyToOne
+	private Training training;
 
 	public long getId() {
 		return id;
@@ -68,6 +74,14 @@ public class TrainingDate {
 		this.setFreePlaces(this.freePlaces - 1);
 	}
 
+	public Training getTraining() {
+		return training;
+	}
+
+	public void setTraining(Training training) {
+		this.training = training;
+	}
+
 	public TrainingDate() {
 		super();
 	}
@@ -85,6 +99,12 @@ public class TrainingDate {
 		if(this.participants != null) {
 			this.freePlaces = 10 - this.participants.size();
 		}
+	}
+	
+	public TrainingDate(LocalDateTime startDate,
+			List<Participant> participants, int freePlaces, Training training) {
+		this(startDate, freePlaces, participants);
+		this.training = training;
 	}
 	
 	public TrainingDate(LocalDateTime startDate) {

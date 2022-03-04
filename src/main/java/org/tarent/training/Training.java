@@ -1,20 +1,17 @@
 package org.tarent.training;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Training {
@@ -108,6 +105,9 @@ public class Training {
 	}
 
 	public void setStartDates(List<TrainingDate> startDates) {
+		for(TrainingDate date : startDates) {
+			date.setTraining(this);
+		}
 		this.startDates = startDates;
 	}
 	
@@ -115,6 +115,7 @@ public class Training {
 		if(this.startDates == null) {
 			this.startDates = new ArrayList<TrainingDate>();
 		}
+		date.setTraining(this);
 		this.startDates.add(date);
 	}
 
