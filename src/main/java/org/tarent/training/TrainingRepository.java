@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.tarent.training.Training;
 
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"http://localhost:3000", "https://trainings-ui.azurewebsites.net/"})
 @RepositoryRestResource(collectionResourceRel = "training", path = "training")
 public interface TrainingRepository extends CrudRepository<Training, Long>{
 	Training getById(long id);
 	
-	// @Query(value = "SELECT distinct * FROM TRAINING T left join TRAINING_DATE D on t.id=d.id where start_date BETWEEN ?1 AND ?2",
-	//		nativeQuery = true)
 	@Query("SELECT d.training FROM TrainingDate d where d.startDate between :startDateTime and :endDateTime")
 	List<Training> findByStartDatesBetween(@RequestParam("startDateTime") 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateTime, @RequestParam("endDateTime") 
