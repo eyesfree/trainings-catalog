@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.tarent.training.Training;
 
-@CrossOrigin(origins = {"http://localhost:3000", "http://trainings-ui.azurewebsites.net/"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://trainings-ui.azurewebsites.net/", "https://trainings-ui.azurewebsites.net/"})
 @RepositoryRestResource(collectionResourceRel = "training", path = "training")
 public interface TrainingRepository extends CrudRepository<Training, Long>{
 	Training getById(long id);
