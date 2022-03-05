@@ -7,9 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.tarent.training.Training;
 
+@CrossOrigin(origins = {"http://localhost:3000"})
 @RepositoryRestResource(collectionResourceRel = "training", path = "training")
 public interface TrainingRepository extends CrudRepository<Training, Long>{
 	Training getById(long id);
