@@ -47,7 +47,6 @@ public class Participant {
 	}
 	public Participant() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public Participant(String firstName, String lastName, String email, PaymentStatus paymentStatus) {
 		super();
